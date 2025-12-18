@@ -1,19 +1,24 @@
 <script>
-let ctx, buffer, source;
+let ctx, source, gainNode;
 
-async function playLoop() {
+async function playLoud() {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
+
     const res = await fetch("music.mp3");
-    const arrayBuffer = await res.arrayBuffer();
-    buffer = await ctx.decodeAudioData(arrayBuffer);
+    const buffer = await res.arrayBuffer();
+    const audioBuffer = await ctx.decodeAudioData(buffer);
 
     source = ctx.createBufferSource();
-    source.buffer = buffer;
+    source.buffer = audioBuffer;
     source.loop = true;
-    source.connect(ctx.destination);
+
+    gainNode = ctx.createGain();
+    gainNode.gain.value =3.5; // 🔥 1.0 = bình thường | 2–3 = to hơn
+
+    source.connect(gainNode).connect(ctx.destination);
     source.start(0);
 }
 
-// iOS bắt buộc có touch
-document.addEventListener("touchstart", playLoop, { once: true });
+// iOS bắt buộc chạm
+document.addEventListener("touchstart", playLoud, { once: true });
 </script>
