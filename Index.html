@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Auto Play Music</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Music</title>
 </head>
 <body>
 
-<audio id="bgMusic" autoplay loop>
+<audio id="bgMusic" loop playsinline>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const music = document.getElementById("bgMusic");
 
-// fix autoplay mobile
-document.addEventListener("click", function () {
+document.addEventListener("touchstart", function () {
     music.play();
 }, { once: true });
 </script>
