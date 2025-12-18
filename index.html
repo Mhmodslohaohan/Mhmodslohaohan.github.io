@@ -13,7 +13,7 @@ async function playLoud() {
     source.loop = true;
 
     gainNode = ctx.createGain();
-    gainNode.gain.value =3.5; // 🔥 1.0 = bình thường | 2–3 = to hơn
+    gainNode.gain.value =4.0; // 🔥 1.0 = bình thường | 2–3 = to hơn
 
     source.connect(gainNode).connect(ctx.destination);
     source.start(0);
