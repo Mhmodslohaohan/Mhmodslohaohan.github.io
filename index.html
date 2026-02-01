@@ -1,0 +1,33 @@
+<script>
+  let ctx, source, gainNode;
+  let started = false;
+
+  async function playLoud() {
+    if (started) return;
+    started = true;
+
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+      const res = await fetch("./assets/music/music.mp3"); 
+      const buffer = await res.arrayBuffer();
+      const audioBuffer = await ctx.decodeAudioData(buffer);
+
+      source = ctx.createBufferSource();
+      source.buffer = audioBuffer;
+      source.loop = true;
+
+      gainNode = ctx.createGain();
+      gainNode.gain.value = 3.0; // 🔊 chỉnh 2.0 – 4.0 tuỳ tai
+
+      source.connect(gainNode).connect(ctx.destination);
+      source.start(0);
+    } catch (e) {
+      console.log("Audio error:", e);
+    }
+  }
+
+  // iOS / Android / PC
+  document.addEventListener("touchstart", playLoud, { once: true });
+  document.addEventListener("click", playLoud, { once: true });
+</script>
